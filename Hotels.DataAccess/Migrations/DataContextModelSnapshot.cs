@@ -21,7 +21,7 @@ namespace Hotels.DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Hotels.Models.Models.Country", b =>
+            modelBuilder.Entity("Hotels.Models.Models.City", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -29,36 +29,43 @@ namespace Hotels.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Country")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ShortName")
+                    b.Property<string>("Division")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries");
+                    b.ToTable("Cities");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            Name = "Bangladesh",
-                            ShortName = "BD"
+                            Country = "Bangladesh",
+                            Division = "Dhaka",
+                            Name = "Dhaka"
                         },
                         new
                         {
                             Id = 2,
-                            Name = "Australia",
-                            ShortName = "Aus"
+                            Country = "Bangladesh",
+                            Division = "Chittagong",
+                            Name = "Chittagong"
                         },
                         new
                         {
                             Id = 3,
-                            Name = "Germany",
-                            ShortName = "Ger"
+                            Country = "Bangladesh",
+                            Division = "Comilla",
+                            Name = "Comilla"
                         });
                 });
 
@@ -74,8 +81,12 @@ namespace Hotels.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CountryId")
+                    b.Property<int>("CityId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -86,7 +97,7 @@ namespace Hotels.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CountryId");
+                    b.HasIndex("CityId");
 
                     b.ToTable("Hotels");
 
@@ -94,41 +105,44 @@ namespace Hotels.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            Address = "Negril",
-                            CountryId = 1,
-                            Name = "Sandals Resort and Spa",
-                            Rating = 4.5
+                            Address = "79/A Commercial Area Airport Rd, Dhaka-1229",
+                            CityId = 1,
+                            Description = "Luxe, modern lodging offering elegant rooms & suites, plus an infinity pool & chic dining.",
+                            Name = "Le Méridien",
+                            Rating = 4.5999999999999996
                         },
                         new
                         {
                             Id = 2,
-                            Address = "George Town",
-                            CountryId = 3,
-                            Name = "Comfort Suites",
-                            Rating = 4.2999999999999998
+                            Address = "Shahid Saifuddin Khaled Rd, Chattogram-4000",
+                            CityId = 2,
+                            Description = "Polished quarters in a contemporary hotel offering an infinity pool, a spa & 3 restaurants.",
+                            Name = "Radisson Blu Chattogram Bay View",
+                            Rating = 4.5999999999999996
                         },
                         new
                         {
                             Id = 3,
-                            Address = "Nassua",
-                            CountryId = 2,
-                            Name = "Grand Palldium",
+                            Address = "931 Laksham Rd, Cumilla-3501",
+                            CityId = 3,
+                            Description = "Laid-back hotel featuring a restaurant & a fitness room, as well as breakfast & parking.",
+                            Name = "OASIS Hotel",
                             Rating = 4.0
                         });
                 });
 
             modelBuilder.Entity("Hotels.Models.Models.Hotel", b =>
                 {
-                    b.HasOne("Hotels.Models.Models.Country", "Country")
+                    b.HasOne("Hotels.Models.Models.City", "City")
                         .WithMany("Hotels")
-                        .HasForeignKey("CountryId")
+                        .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Country");
+                    b.Navigation("City");
                 });
 
-            modelBuilder.Entity("Hotels.Models.Models.Country", b =>
+            modelBuilder.Entity("Hotels.Models.Models.City", b =>
                 {
                     b.Navigation("Hotels");
                 });
