@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Hotels.DataAccess.Data;
 using Hotels.Models.Models;
+using Hotels.Models.Dtos.City;
+using AutoMapper;
 
 namespace Hotels.API.Controllers;
 
@@ -10,20 +12,22 @@ namespace Hotels.API.Controllers;
 public class CitiesController : ControllerBase
 {
     private readonly DataContext _context;
+    private readonly IMapper _mapper;
 
-    public CitiesController(DataContext context)
+    public CitiesController(DataContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
     // GET: api/Cities
     [HttpGet]
     public async Task<ActionResult<IEnumerable<City>>> GetCities()
     {
-      if (_context.Cities is null)
-      {
-          return NotFound();
-      }
+        if (_context.Cities is null)
+        {
+            return NotFound();
+        }
         return await _context.Cities.ToListAsync();
     }
 
@@ -31,10 +35,10 @@ public class CitiesController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<City>> GetCity(int id)
     {
-      if (_context.Cities is null)
-      {
-          return NotFound();
-      }
+        if (_context.Cities is null)
+        {
+            return NotFound();
+        }
         var city = await _context.Cities.FindAsync(id);
 
         if (city is null)
@@ -79,12 +83,15 @@ public class CitiesController : ControllerBase
     // POST: api/Cities
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<City>> PostCity(City city)
+    public async Task<ActionResult<City>> PostCity(CreateCityDto createCity)
     {
-      if (_context.Cities is null)
-      {
-          return Problem("Entity set 'DataContext.Cities'  is null.");
-      }
+        if (_context.Cities is null)
+        {
+            return Problem("Entity set 'DataContext.Cities'  is null.");
+        }
+
+        var city = _mapper.Map<City>(createCity);
+
         _context.Cities.Add(city);
         await _context.SaveChangesAsync();
 
