@@ -2,12 +2,7 @@
 
 namespace Hotels.Models.Dtos.City;
 
-public class CreateCityDto
+public class CreateCityDto : BaseCityDto
 {
-    [Required]
-    public string Name { get; set; } = string.Empty;
-    [Required]
-    public string Country { get; set; } = string.Empty;
-    [Required]
-    public string Division { get; set; } = string.Empty;
+
 }

@@ -1,8 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Hotels.Models.Models;
 
-namespace Hotels.Models.Models;
+namespace Hotels.Models.Dtos.Room;
 
-public class Room
+public class GetRoomDto
 {
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
@@ -19,8 +19,5 @@ public class Room
     public bool IsFavourite { get; set; }
     public double ServiceCharge { get; set; }
     public string DiscountedPrice { get; set; } = string.Empty;
-
-    [ForeignKey(nameof(HotelId))]
     public int HotelId { get; set; }
-    public Hotel Hotel { get; set; }
 }
