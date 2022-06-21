@@ -2,7 +2,6 @@
 
 namespace Hotels.DataAccess.Contracts;
 
-public interface ICityRepository : IGenericRepository<City>
+public interface IRoomsRepository : IGenericRepository<Room>
 {
-
 }

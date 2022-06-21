@@ -4,6 +4,7 @@ using Hotels.DataAccess.Data;
 using Hotels.Models.Models;
 using Hotels.Models.Dtos.City;
 using AutoMapper;
+using Hotels.DataAccess.Contracts;
 
 namespace Hotels.API.Controllers;
 
@@ -11,23 +12,24 @@ namespace Hotels.API.Controllers;
 [ApiController]
 public class CitiesController : ControllerBase
 {
-    private readonly DataContext _context;
     private readonly IMapper _mapper;
+    private readonly ICitiesRepository _citiesRepository;
 
-    public CitiesController(DataContext context, IMapper mapper)
+    public CitiesController(IMapper mapper, ICitiesRepository citiesRepository)
     {
-        _context = context;
         _mapper = mapper;
+        _citiesRepository = citiesRepository;
     }
 
     // GET: api/Cities
     [HttpGet]
     public async Task<ActionResult<IEnumerable<GetCityDto>>> GetCities()
     {
-        if (_context.Cities is null)
+        var cities = await _citiesRepository.GetAllAsync();
+
+        if (cities is null)
             return NotFound();
 
-        var cities = await _context.Cities.ToListAsync();
         var getCities = _mapper.Map<List<GetCityDto>>(cities);
 
         return Ok(getCities);
@@ -37,11 +39,7 @@ public class CitiesController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<CityDto>> GetCity(int id)
     {
-        if (_context.Cities is null)
-            return NotFound();
-
-        var city = await _context.Cities.Include(q => q.Hotels)
-            .FirstOrDefaultAsync(q => q.Id == id);
+        var city = await _citiesRepository.GetDetails(id);
 
         if (city is null)
             return NotFound();
@@ -61,7 +59,7 @@ public class CitiesController : ControllerBase
 
         //_context.Entry(city).State = EntityState.Modified;
 
-        var city = await _context.Cities.FindAsync(id);
+        var city = await _citiesRepository.GetAsync(id);
 
         if (city is null)
             return NotFound();
@@ -70,11 +68,11 @@ public class CitiesController : ControllerBase
 
         try
         {
-            await _context.SaveChangesAsync();
+            await _citiesRepository.UpdateAsync(city);
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!CityExists(id))
+            if (!await CityExists(id))
                 return NotFound();
             else
                 throw;
@@ -88,13 +86,12 @@ public class CitiesController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<City>> PostCity(CreateCityDto createCity)
     {
-        if (_context.Cities is null)
-            return Problem("Entity set 'DataContext.Cities'  is null.");
-
         var city = _mapper.Map<City>(createCity);
 
-        _context.Cities.Add(city);
-        await _context.SaveChangesAsync();
+        if (city is null)
+            return Problem("Entity set 'DataContext.Cities'  is null.");
+
+        await _citiesRepository.AddAsync(city);
 
         return CreatedAtAction("GetCity", new { id = city.Id }, city);
     }
@@ -103,21 +100,19 @@ public class CitiesController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCity(int id)
     {
-        if (_context.Cities is null)
-            return NotFound();
+        var city = await _citiesRepository.GetAsync(id);
 
-        var city = await _context.Cities.FindAsync(id);
         if (city is null)
             return NotFound();
 
-        _context.Cities.Remove(city);
-        await _context.SaveChangesAsync();
+        await _citiesRepository.DeleteAsync(id);
 
         return NoContent();
     }
 
-    private bool CityExists(int id)
+    private async Task<bool> CityExists(int id)
     {
-        return (_context.Cities?.Any(e => e.Id == id)).GetValueOrDefault();
+        return await _citiesRepository.Exists(id);
+        //return (_context.Cities?.Any(e => e.Id == id)).GetValueOrDefault();
     }
 }

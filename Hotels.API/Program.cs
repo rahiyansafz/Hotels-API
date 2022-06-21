@@ -1,4 +1,6 @@
+using Hotels.DataAccess.Contracts;
 using Hotels.DataAccess.Data;
+using Hotels.DataAccess.Repository;
 using Hotels.Models.Configurations;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -28,6 +30,12 @@ builder.Services.AddCors(options =>
 builder.Host.UseSerilog((ctx, lc) => lc.WriteTo.Console().ReadFrom.Configuration(ctx.Configuration));
 
 builder.Services.AddAutoMapper(typeof(MapperConfig));
+
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+builder.Services.AddScoped<ICitiesRepository, CitiesRepository>();
+builder.Services.AddScoped<IHotelsRepository, HotelsRepository>();
+builder.Services.AddScoped<IRoomsRepository, RoomsRepository>();
 
 var app = builder.Build();
 
