@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Hotels.DataAccess.Data;
 using Hotels.Models.Models;
 using Hotels.Models.Dtos.City;
 using AutoMapper;
