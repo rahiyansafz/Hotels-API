@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hotels.DataAccess.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220619201535_HotelModelsDb")]
-    partial class HotelModelsDb
+    [Migration("20220621212948_InitialDb")]
+    partial class InitialDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -250,7 +250,7 @@ namespace Hotels.DataAccess.Migrations
                             DiscountedPrice = "",
                             DisplayPrice = "$321",
                             DisplayPriceRaw = 321.35000000000002,
-                            HotelId = 1,
+                            HotelId = 2,
                             IsAvailable = true,
                             IsBooked = false,
                             IsFavourite = false,
@@ -269,7 +269,7 @@ namespace Hotels.DataAccess.Migrations
                             DiscountedPrice = "",
                             DisplayPrice = "$321",
                             DisplayPriceRaw = 321.35000000000002,
-                            HotelId = 1,
+                            HotelId = 3,
                             IsAvailable = true,
                             IsBooked = false,
                             IsFavourite = false,

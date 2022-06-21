@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Hotels.DataAccess.Migrations
 {
-    public partial class HotelModelsDb : Migration
+    public partial class InitialDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -122,12 +122,12 @@ namespace Hotels.DataAccess.Migrations
             migrationBuilder.InsertData(
                 table: "Rooms",
                 columns: new[] { "Id", "BathroomCount", "BedCount", "CheckIn", "CheckOut", "DiscountedPrice", "DisplayPrice", "DisplayPriceRaw", "HotelId", "IsAvailable", "IsBooked", "IsFavourite", "MaxOccupancies", "Name", "ServiceCharge", "Type" },
-                values: new object[] { 2, 2, 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", "$321", 321.35000000000002, 1, true, false, false, 6, "Double Deluxe", 15.0, 4 });
+                values: new object[] { 2, 2, 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", "$321", 321.35000000000002, 2, true, false, false, 6, "Double Deluxe", 15.0, 4 });
 
             migrationBuilder.InsertData(
                 table: "Rooms",
                 columns: new[] { "Id", "BathroomCount", "BedCount", "CheckIn", "CheckOut", "DiscountedPrice", "DisplayPrice", "DisplayPriceRaw", "HotelId", "IsAvailable", "IsBooked", "IsFavourite", "MaxOccupancies", "Name", "ServiceCharge", "Type" },
-                values: new object[] { 3, 2, 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", "$321", 321.35000000000002, 1, true, false, false, 6, "Twin Deluxe", 15.0, 5 });
+                values: new object[] { 3, 2, 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", "$321", 321.35000000000002, 3, true, false, false, 6, "Twin Deluxe", 15.0, 5 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Hotels_CityId",
