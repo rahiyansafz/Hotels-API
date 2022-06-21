@@ -1,4 +1,4 @@
-namespace Hotels.API;
+namespace Hotels.Models.Models;
 
 public class WeatherForecast
 {

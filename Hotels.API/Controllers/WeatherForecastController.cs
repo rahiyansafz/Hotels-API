@@ -1,3 +1,4 @@
+using Hotels.Models.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hotels.API.Controllers;
