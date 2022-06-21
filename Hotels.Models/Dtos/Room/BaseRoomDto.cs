@@ -31,5 +31,6 @@ public class BaseRoomDto
     public double ServiceCharge { get; set; }
     [Required]
     public string DiscountedPrice { get; set; } = string.Empty;
+    [Required]
     public int HotelId { get; set; }
 }

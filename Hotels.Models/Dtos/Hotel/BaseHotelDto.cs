@@ -19,5 +19,6 @@ public class BaseHotelDto
     public double MaxPrice { get; set; }
     [Required]
     public int Occupancies { get; set; }
+    [Required]
     public int CityId { get; set; }
 }

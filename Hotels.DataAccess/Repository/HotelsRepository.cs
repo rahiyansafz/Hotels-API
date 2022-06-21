@@ -2,6 +2,7 @@
 using Hotels.DataAccess.Contracts;
 using Hotels.DataAccess.Data;
 using Hotels.Models.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hotels.DataAccess.Repository;
 
@@ -13,5 +14,11 @@ public class HotelsRepository : GenericRepository<Hotel>, IHotelsRepository
     {
         _context = context;
         _mapper = mapper;
+    }
+
+    public async Task<Hotel> GetDetails(int id)
+    {
+        return await _context.Hotels.Include(q => q.Rooms)
+            .FirstOrDefaultAsync(q => q.Id == id);
     }
 }

@@ -119,7 +119,7 @@ public class DataContext : DbContext
                 IsFavourite = false,
                 ServiceCharge = 15,
                 DiscountedPrice = string.Empty,
-                HotelId = 1
+                HotelId = 2
             },
             new Room
             {
@@ -138,7 +138,7 @@ public class DataContext : DbContext
                 IsFavourite = false,
                 ServiceCharge = 15,
                 DiscountedPrice = string.Empty,
-                HotelId = 1
+                HotelId = 3
             }
             );
     }
