@@ -44,9 +44,9 @@ public class HotelsController : ControllerBase
         if (hotel is null)
             return NotFound();
 
-        var getCity = _mapper.Map<HotelDto>(hotel);
+        var getHotel = _mapper.Map<HotelDto>(hotel);
 
-        return Ok(getCity);
+        return Ok(getHotel);
     }
 
     // PUT: api/Hotels/5
@@ -55,9 +55,7 @@ public class HotelsController : ControllerBase
     public async Task<IActionResult> PutHotel(int id, UpdateHotelDto updatedHotel)
     {
         if (id != updatedHotel.Id)
-        {
             return BadRequest();
-        }
 
         //_context.Entry(hotel).State = EntityState.Modified;
 
@@ -75,13 +73,9 @@ public class HotelsController : ControllerBase
         catch (DbUpdateConcurrencyException)
         {
             if (!await HotelExists(id))
-            {
                 return NotFound();
-            }
             else
-            {
                 throw;
-            }
         }
 
         return NoContent();
@@ -109,9 +103,7 @@ public class HotelsController : ControllerBase
         var hotel = await _hotelsRepository.GetAsync(id);
 
         if (hotel is null)
-        {
             return NotFound();
-        }
 
         await _hotelsRepository.DeleteAsync(id);
 
