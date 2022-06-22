@@ -2,6 +2,7 @@
 using Hotels.Models.Dtos.City;
 using Hotels.Models.Dtos.Hotel;
 using Hotels.Models.Dtos.Room;
+using Hotels.Models.Dtos.User;
 using Hotels.Models.Models;
 
 namespace Hotels.Models.Configurations;
@@ -24,5 +25,7 @@ public class MapperConfig : Profile
         CreateMap<Room, GetRoomDto>().ReverseMap();
         CreateMap<Room, CreateRoomDto>().ReverseMap();
         CreateMap<Room, UpdateRoomDto>().ReverseMap();
+
+        CreateMap<UserDto, User>().ReverseMap();
     }
 }
