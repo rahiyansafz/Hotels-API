@@ -5,6 +5,7 @@ using Hotels.Models.Models;
 using AutoMapper;
 using Hotels.DataAccess.Contracts;
 using Hotels.Models.Dtos.Hotel;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hotels.API.Controllers;
 
@@ -52,6 +53,7 @@ public class HotelsController : ControllerBase
     // PUT: api/Hotels/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> PutHotel(int id, UpdateHotelDto updatedHotel)
     {
         if (id != updatedHotel.Id)
@@ -84,6 +86,7 @@ public class HotelsController : ControllerBase
     // POST: api/Hotels
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
+    [Authorize(Roles = "Administrator")]
     public async Task<ActionResult<Hotel>> PostHotel(CreateHotelDto createHotel)
     {
         var hotel = _mapper.Map<Hotel>(createHotel);
@@ -98,6 +101,7 @@ public class HotelsController : ControllerBase
 
     // DELETE: api/Hotels/5
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> DeleteHotel(int id)
     {
         var hotel = await _hotelsRepository.GetAsync(id);

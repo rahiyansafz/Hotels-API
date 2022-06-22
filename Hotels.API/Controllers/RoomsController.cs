@@ -5,6 +5,7 @@ using Hotels.Models.Models;
 using AutoMapper;
 using Hotels.DataAccess.Contracts;
 using Hotels.Models.Dtos.Room;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hotels.API.Controllers;
 
@@ -52,6 +53,7 @@ public class RoomsController : ControllerBase
     // PUT: api/Rooms/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> PutRoom(int id, UpdateRoomDto updatedRoom)
     {
         if (id != updatedRoom.Id)
@@ -73,13 +75,9 @@ public class RoomsController : ControllerBase
         catch (DbUpdateConcurrencyException)
         {
             if (!await RoomExists(id))
-            {
                 return NotFound();
-            }
             else
-            {
                 throw;
-            }
         }
 
         return NoContent();
@@ -88,6 +86,7 @@ public class RoomsController : ControllerBase
     // POST: api/Rooms
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
+    [Authorize(Roles = "Administrator")]
     public async Task<ActionResult<Room>> PostRoom(CreateRoomDto createRoom)
     {
         var room = _mapper.Map<Room>(createRoom);
@@ -102,6 +101,7 @@ public class RoomsController : ControllerBase
 
     // DELETE: api/Rooms/5
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> DeleteRoom(int id)
     {
         var room = await _roomsRepository.GetAsync(id);

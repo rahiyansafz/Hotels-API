@@ -4,6 +4,7 @@ using Hotels.Models.Models;
 using Hotels.Models.Dtos.City;
 using AutoMapper;
 using Hotels.DataAccess.Contracts;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hotels.API.Controllers;
 
@@ -51,6 +52,7 @@ public class CitiesController : ControllerBase
     // PUT: api/Cities/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> PutCity(int id, UpdateCityDto updatedCity)
     {
         if (id != updatedCity.Id)
@@ -83,6 +85,7 @@ public class CitiesController : ControllerBase
     // POST: api/Cities
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
+    [Authorize(Roles = "Administrator")]
     public async Task<ActionResult<City>> PostCity(CreateCityDto createCity)
     {
         var city = _mapper.Map<City>(createCity);
@@ -97,6 +100,7 @@ public class CitiesController : ControllerBase
 
     // DELETE: api/Cities/5
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> DeleteCity(int id)
     {
         var city = await _citiesRepository.GetAsync(id);
