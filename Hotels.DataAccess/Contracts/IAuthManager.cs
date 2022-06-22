@@ -9,4 +9,6 @@ public interface IAuthManager
 {
     Task<IEnumerable<IdentityError>> Register(UserDto user);
     Task<AuthResponse> Login(LoginDto login);
+    Task<string> CreateRefreshToken();
+    Task<AuthResponse> VerifyRefreshToken(AuthResponse request);
 }

@@ -1,5 +1,6 @@
 ﻿using Hotels.DataAccess.Contracts;
 using Hotels.Models.Dtos.User;
+using Hotels.Models.Models.Auth;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -58,21 +59,19 @@ public class AccountController : ControllerBase
         return Ok(authResponse);
     }
 
-    //// POST: api/Account/refreshtoken
-    //[HttpPost]
-    //[Route("refreshtoken")]
-    //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-    //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    //[ProducesResponseType(StatusCodes.Status200OK)]
-    //public async Task<ActionResult> RefreshToken([FromBody] AuthResponseDto request)
-    //{
-    //    var authResponse = await _authManager.VerifyRefreshToken(request);
+    // POST: api/Account/refreshtoken
+    [HttpPost]
+    [Route("refreshtoken")]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult> RefreshToken([FromBody] AuthResponse request)
+    {
+        var authResponse = await _authManager.VerifyRefreshToken(request);
 
-    //    if (authResponse == null)
-    //    {
-    //        return Unauthorized();
-    //    }
+        if (authResponse is null)
+            return Unauthorized();
 
-    //    return Ok(authResponse);
-    //}
+        return Ok(authResponse);
+    }
 }
