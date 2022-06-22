@@ -50,22 +50,12 @@ public class AccountController : ControllerBase
     public async Task<ActionResult> Login([FromBody] LoginDto login)
     {
         //_logger.LogInformation($"Login Attempt for {loginDto.Email} ");
-        //var authResponse = await _authManager.Login(login);
+        var authResponse = await _authManager.Login(login);
 
-        //if (authResponse == null)
-        //{
-        //    return Unauthorized();
-        //}
-
-        //return Ok(authResponse);
-
-        var isValidUser = await _authManager.Login(login);
-
-        if (!isValidUser)
+        if (authResponse is null)
             return Unauthorized();
 
-        return Ok();
-
+        return Ok(authResponse);
     }
 
     //// POST: api/Account/refreshtoken

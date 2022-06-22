@@ -1,5 +1,6 @@
 ﻿using Hotels.DataAccess.Data.Configurations;
 using Hotels.Models.Models;
+using Hotels.Models.Models.Auth;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

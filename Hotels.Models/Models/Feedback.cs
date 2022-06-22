@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Hotels.Models.Models.Auth;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Hotels.Models.Models;
 

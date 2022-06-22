@@ -3,6 +3,7 @@ using Hotels.DataAccess.Data;
 using Hotels.DataAccess.Repository;
 using Hotels.Models.Configurations;
 using Hotels.Models.Models;
+using Hotels.Models.Models.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

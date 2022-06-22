@@ -4,6 +4,7 @@ using Hotels.Models.Dtos.Hotel;
 using Hotels.Models.Dtos.Room;
 using Hotels.Models.Dtos.User;
 using Hotels.Models.Models;
+using Hotels.Models.Models.Auth;
 
 namespace Hotels.Models.Configurations;
 
