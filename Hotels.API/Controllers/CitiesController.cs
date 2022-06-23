@@ -5,6 +5,7 @@ using Hotels.Models.Dtos.City;
 using AutoMapper;
 using Hotels.DataAccess.Contracts;
 using Microsoft.AspNetCore.Authorization;
+using Hotels.API.Exceptions;
 
 namespace Hotels.API.Controllers;
 
@@ -42,7 +43,7 @@ public class CitiesController : ControllerBase
         var city = await _citiesRepository.GetDetails(id);
 
         if (city is null)
-            return NotFound();
+            throw new NotFoundException(nameof(GetCity), id);
 
         var getCity = _mapper.Map<CityDto>(city);
 
@@ -56,14 +57,14 @@ public class CitiesController : ControllerBase
     public async Task<IActionResult> PutCity(int id, UpdateCityDto updatedCity)
     {
         if (id != updatedCity.Id)
-            return BadRequest();
+            return BadRequest("Invalid Record Id");
 
         //_context.Entry(city).State = EntityState.Modified;
 
         var city = await _citiesRepository.GetAsync(id);
 
         if (city is null)
-            return NotFound();
+            throw new NotFoundException(nameof(GetCities), id);
 
         _mapper.Map(updatedCity, city);
 
@@ -106,7 +107,7 @@ public class CitiesController : ControllerBase
         var city = await _citiesRepository.GetAsync(id);
 
         if (city is null)
-            return NotFound();
+            throw new NotFoundException(nameof(GetCities), id);
 
         await _citiesRepository.DeleteAsync(id);
 

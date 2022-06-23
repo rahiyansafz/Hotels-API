@@ -29,27 +29,18 @@ public class AccountController : ControllerBase
     {
         _logger.LogInformation($"Registration Attempt for {userDto.Email}");
 
-        try
-        {
-            var errors = await _authManager.Register(userDto);
+        var errors = await _authManager.Register(userDto);
 
-            if (errors.Any())
+        if (errors.Any())
+        {
+            foreach (var error in errors)
             {
-                foreach (var error in errors)
-                {
-                    ModelState.AddModelError(error.Code, error.Description);
-                }
-                return BadRequest(ModelState);
+                ModelState.AddModelError(error.Code, error.Description);
             }
-
-            return Ok();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, $"Something Went Wrong in the {nameof(Register)} - User Registration Attempt for {userDto.Email}");
-            return Problem($"Something Went Wrong in the {nameof(Register)}. Please Contact Support", statusCode: 500);
+            return BadRequest(ModelState);
         }
 
+        return Ok();
 
     }
 
@@ -63,20 +54,12 @@ public class AccountController : ControllerBase
     {
         _logger.LogInformation($"Login Attempt for {login.Email} ");
 
-        try
-        {
-            var authResponse = await _authManager.Login(login);
+        var authResponse = await _authManager.Login(login);
 
-            if (authResponse is null)
-                return Unauthorized();
+        if (authResponse is null)
+            return Unauthorized();
 
-            return Ok(authResponse);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, $"Something Went Wrong in the {nameof(Login)}");
-            return Problem($"Something Went Wrong in the {nameof(Login)}", statusCode: 500);
-        }
+        return Ok(authResponse);
 
     }
 
