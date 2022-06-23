@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Hotels.DataAccess.Contracts;
 using Hotels.Models.Dtos.User;
-using Hotels.Models.Models;
 using Hotels.Models.Models.Auth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -17,16 +17,18 @@ public class AuthManager : IAuthManager
     private readonly IMapper _mapper;
     private readonly UserManager<User> _userManager;
     private readonly IConfiguration _configuration;
+    private readonly ILogger<AuthManager> _logger;
     private User _user;
 
     private const string _loginProvider = "HotelsAPI";
     private const string _refreshToken = "RefreshToken";
 
-    public AuthManager(IMapper mapper, UserManager<User> userManager, IConfiguration configuration)
+    public AuthManager(IMapper mapper, UserManager<User> userManager, IConfiguration configuration, ILogger<AuthManager> logger)
     {
         _mapper = mapper;
         _userManager = userManager;
         _configuration = configuration;
+        _logger = logger;
     }
 
     public async Task<string> CreateRefreshToken()
@@ -44,9 +46,13 @@ public class AuthManager : IAuthManager
         bool isValidUser = await _userManager.CheckPasswordAsync(_user, login.Password);
 
         if (_user is null || !isValidUser)
+        {
+            _logger.LogWarning($"User with email {login.Email} was not found");
             return null;
+        }
 
         var token = await GenerateToken();
+        _logger.LogInformation($"Token generated for user with email {login.Email} | Token: {token}");
 
         return new AuthResponse
         {

@@ -27,19 +27,30 @@ public class AccountController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult> Register([FromBody] UserDto userDto)
     {
-        //_logger.LogInformation($"Registration Attempt for {userDto.Email}");
-        var errors = await _authManager.Register(userDto);
+        _logger.LogInformation($"Registration Attempt for {userDto.Email}");
 
-        if (errors.Any())
+        try
         {
-            foreach (var error in errors)
+            var errors = await _authManager.Register(userDto);
+
+            if (errors.Any())
             {
-                ModelState.AddModelError(error.Code, error.Description);
+                foreach (var error in errors)
+                {
+                    ModelState.AddModelError(error.Code, error.Description);
+                }
+                return BadRequest(ModelState);
             }
-            return BadRequest(ModelState);
+
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Something Went Wrong in the {nameof(Register)} - User Registration Attempt for {userDto.Email}");
+            return Problem($"Something Went Wrong in the {nameof(Register)}. Please Contact Support", statusCode: 500);
         }
 
-        return Ok();
+
     }
 
     // POST: api/Account/login
@@ -50,13 +61,23 @@ public class AccountController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult> Login([FromBody] LoginDto login)
     {
-        //_logger.LogInformation($"Login Attempt for {loginDto.Email} ");
-        var authResponse = await _authManager.Login(login);
+        _logger.LogInformation($"Login Attempt for {login.Email} ");
 
-        if (authResponse is null)
-            return Unauthorized();
+        try
+        {
+            var authResponse = await _authManager.Login(login);
 
-        return Ok(authResponse);
+            if (authResponse is null)
+                return Unauthorized();
+
+            return Ok(authResponse);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Something Went Wrong in the {nameof(Login)}");
+            return Problem($"Something Went Wrong in the {nameof(Login)}", statusCode: 500);
+        }
+
     }
 
     // POST: api/Account/refreshtoken
