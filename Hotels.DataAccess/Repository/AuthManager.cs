@@ -51,7 +51,8 @@ public class AuthManager : IAuthManager
         return new AuthResponse
         {
             Token = token,
-            UserId = _user.Id
+            UserId = _user.Id,
+            RefreshToken = await CreateRefreshToken()
         };
     }
 
