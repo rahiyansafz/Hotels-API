@@ -16,6 +16,7 @@ public class DataContext : IdentityDbContext<User>
     public DbSet<Hotel> Hotels { get; set; }
     public DbSet<City> Cities { get; set; }
     public DbSet<Room> Rooms { get; set; }
+    public DbSet<Feedback> Feedbacks { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
