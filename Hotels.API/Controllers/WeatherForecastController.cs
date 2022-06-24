@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Hotels.API.Controllers;
 
 [ApiController]
-[Route("v{version:apiVersion}/[controller]")] // will get the default v:1.0 if [ApiVersion("2.0")] is not defined
+[Route("api/v{version:apiVersion}/[controller]")] // will get the default v:1.0 if [ApiVersion("2.0")] is not defined
 [ApiVersion("1.0", Deprecated = true)]
 public class WeatherForecastController : ControllerBase
 {
