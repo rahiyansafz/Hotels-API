@@ -78,7 +78,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         };
     }
 
-    public async Task<List<TResult>> GetAllAsync<TResult>()
+    public async Task<IEnumerable<TResult>> GetAllAsync<TResult>()
     {
         return await _context.Set<T>()
             .ProjectTo<TResult>(_mapper.ConfigurationProvider)

@@ -6,6 +6,9 @@ using AutoMapper;
 using Hotels.DataAccess.Contracts;
 using Hotels.Models.Dtos.Room;
 using Microsoft.AspNetCore.Authorization;
+using Hotels.Models.Models.Response;
+using Hotels.Models.Models.QueryResponse;
+using Hotels.Models.Exceptions;
 
 namespace Hotels.API.Controllers;
 
@@ -22,35 +25,39 @@ public class RoomsController : ControllerBase
         _roomsRepository = roomsRepository;
     }
 
-    // GET: api/Rooms
-    [HttpGet]
+    // GET: api/v1/Rooms/GetAll
+    [HttpGet("GetAll")]
     public async Task<ActionResult<IEnumerable<GetRoomDto>>> GetRooms()
     {
-        var rooms = await _roomsRepository.GetAllAsync();
+        var rooms = await _roomsRepository.GetAllAsync<GetRoomDto>();
 
         if (rooms is null)
             return NotFound();
 
-        var getRooms = _mapper.Map<List<GetRoomDto>>(rooms);
-
-        return Ok(getRooms);
+        return Ok(rooms);
     }
 
-    // GET: api/Rooms/5
+    // GET: api/Rooms/?StartIndex=0&pagesize=25&PageNumber=1
+    [HttpGet]
+    public async Task<ActionResult<PagedResult<GetRoomDto>>> GetPagedRooms([FromQuery] QueryParameters queryParameters)
+    {
+        var rooms = await _roomsRepository.GetAllAsync<GetRoomDto>(queryParameters);
+        return Ok(rooms);
+    }
+
+    // GET: api/v1/Rooms/5
     [HttpGet("{id}")]
     public async Task<ActionResult<RoomDto>> GetRoom(int id)
     {
         var room = await _roomsRepository.GetDetails(id);
 
         if (room is null)
-            return NotFound();
+            throw new NotFoundException(nameof(GetRoom), id);
 
-        var getRoom = _mapper.Map<RoomDto>(room);
-
-        return Ok(getRoom);
+        return Ok(room);
     }
 
-    // PUT: api/Rooms/5
+    // PUT: api/v1/Rooms/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
     [Authorize(Roles = "Administrator")]
@@ -59,18 +66,9 @@ public class RoomsController : ControllerBase
         if (id != updatedRoom.Id)
             return BadRequest();
 
-        //_context.Entry(room).State = EntityState.Modified;
-
-        var room = await _roomsRepository.GetAsync(id);
-
-        if (room is null)
-            return NotFound();
-
-        _mapper.Map(updatedRoom, room);
-
         try
         {
-            await _roomsRepository.UpdateAsync(room);
+            await _roomsRepository.UpdateAsync(id, updatedRoom);
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -83,32 +81,22 @@ public class RoomsController : ControllerBase
         return NoContent();
     }
 
-    // POST: api/Rooms
+    // POST: api/v1/Rooms
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
     [Authorize(Roles = "Administrator")]
-    public async Task<ActionResult<Room>> PostRoom(CreateRoomDto createRoom)
+    public async Task<ActionResult<RoomDto>> PostRoom(CreateRoomDto createRoom)
     {
-        var room = _mapper.Map<Room>(createRoom);
-
-        if (room is null)
-            return Problem("Entity set 'DataContext.Rooms'  is null.");
-
-        await _roomsRepository.AddAsync(room);
+        var room = await _roomsRepository.AddAsync<CreateRoomDto, GetRoomDto>(createRoom);
 
         return CreatedAtAction("GetRoom", new { id = room.Id }, room);
     }
 
-    // DELETE: api/Rooms/5
+    // DELETE: api/v1/Rooms/5
     [HttpDelete("{id}")]
     [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> DeleteRoom(int id)
     {
-        var room = await _roomsRepository.GetAsync(id);
-
-        if (room is null)
-            return NotFound();
-
         await _roomsRepository.DeleteAsync(id);
 
         return NoContent();
@@ -117,6 +105,5 @@ public class RoomsController : ControllerBase
     private async Task<bool> RoomExists(int id)
     {
         return await _roomsRepository.Exists(id);
-        //return (_context.Rooms?.Any(e => e.Id == id)).GetValueOrDefault();
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Hotels.Models.Dtos.Room;
 
-public class GetRoomDto : BaseRoomDto
+public class GetRoomDto : BaseRoomDto, IBase
 {
     public int Id { get; set; }
 }

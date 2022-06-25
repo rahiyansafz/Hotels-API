@@ -15,6 +15,7 @@ public class CityConfiguration : IEntityTypeConfiguration<City>
                 Name = "Dhaka",
                 Country = "Bangladesh",
                 Division = "Dhaka",
+                IsFeatured = true,
             },
             new City
             {
@@ -22,6 +23,7 @@ public class CityConfiguration : IEntityTypeConfiguration<City>
                 Name = "Chittagong",
                 Country = "Bangladesh",
                 Division = "Chittagong",
+                IsFeatured = true,
             },
             new City
             {
@@ -29,6 +31,7 @@ public class CityConfiguration : IEntityTypeConfiguration<City>
                 Name = "Comilla",
                 Country = "Bangladesh",
                 Division = "Comilla",
+                IsFeatured = true,
             });
     }
 }

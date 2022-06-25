@@ -26,7 +26,7 @@ public class RoomConfiguration : IEntityTypeConfiguration<Room>
                 IsFavourite = false,
                 ServiceCharge = 15,
                 DiscountedPrice = string.Empty,
-                HotelId = 1
+                HotelId = 1,
             },
             new Room
             {

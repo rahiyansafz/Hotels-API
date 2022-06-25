@@ -19,7 +19,7 @@ public class AccountController : ControllerBase
         _logger = logger;
     }
 
-    // POST: api/Account/register
+    // POST: api/v1/Account/register
     [HttpPost]
     [Route("register")]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -44,7 +44,7 @@ public class AccountController : ControllerBase
 
     }
 
-    // POST: api/Account/login
+    // POST: api/v1/Account/login
     [HttpPost]
     [Route("login")]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -63,7 +63,7 @@ public class AccountController : ControllerBase
 
     }
 
-    // POST: api/Account/refreshtoken
+    // POST: api/v1/Account/refreshtoken
     [HttpPost]
     [Route("refreshtoken")]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

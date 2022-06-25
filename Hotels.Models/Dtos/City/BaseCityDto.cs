@@ -10,4 +10,6 @@ public abstract class BaseCityDto
     public string Country { get; set; } = string.Empty;
     [Required]
     public string Division { get; set; } = string.Empty;
+    [Required]
+    public bool IsFeatured { get; set; }
 }

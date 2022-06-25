@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Hotels.DataAccess.Data;
 using Hotels.Models.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hotels.API.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/v{version:apiVersion}/[controller]")]
 [ApiController]
+[Authorize]
 public class BookingsController : ControllerBase
 {
     private readonly DataContext _context;
@@ -21,7 +23,7 @@ public class BookingsController : ControllerBase
         _context = context;
     }
 
-    // GET: api/Bookings
+    // GET: api/v1/Bookings
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Booking>>> GetBookings()
     {
@@ -32,7 +34,7 @@ public class BookingsController : ControllerBase
         return await _context.Bookings.ToListAsync();
     }
 
-    // GET: api/Bookings/5
+    // GET: api/v1/Bookings/5
     [HttpGet("{id}")]
     public async Task<ActionResult<Booking>> GetBooking(int id)
     {
@@ -50,7 +52,7 @@ public class BookingsController : ControllerBase
         return booking;
     }
 
-    // PUT: api/Bookings/5
+    // PUT: api/v1/Bookings/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
     public async Task<IActionResult> PutBooking(int id, Booking booking)
@@ -81,7 +83,7 @@ public class BookingsController : ControllerBase
         return NoContent();
     }
 
-    // POST: api/Bookings
+    // POST: api/v1/Bookings
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
     public async Task<ActionResult<Booking>> PostBooking(Booking booking)
@@ -96,7 +98,7 @@ public class BookingsController : ControllerBase
         return CreatedAtAction("GetBooking", new { id = booking.Id }, booking);
     }
 
-    // DELETE: api/Bookings/5
+    // DELETE: api/v1/Bookings/5
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteBooking(int id)
     {

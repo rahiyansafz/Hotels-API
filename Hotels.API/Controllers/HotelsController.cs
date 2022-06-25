@@ -6,6 +6,9 @@ using AutoMapper;
 using Hotels.DataAccess.Contracts;
 using Hotels.Models.Dtos.Hotel;
 using Microsoft.AspNetCore.Authorization;
+using Hotels.Models.Models.Response;
+using Hotels.Models.Models.QueryResponse;
+using Hotels.Models.Exceptions;
 
 namespace Hotels.API.Controllers;
 
@@ -22,55 +25,50 @@ public class HotelsController : ControllerBase
         _hotelsRepository = hotelsRepository;
     }
 
-    // GET: api/Hotels
-    [HttpGet]
+    // GET: api/v1/Hotels/GetAll
+    [HttpGet("GetAll")]
     public async Task<ActionResult<IEnumerable<GetHotelDto>>> GetHotels()
     {
-        var hotels = await _hotelsRepository.GetAllAsync();
+        var hotels = await _hotelsRepository.GetAllAsync<GetHotelDto>();
 
         if (hotels is null)
             return NotFound();
 
-        var getHotels = _mapper.Map<List<GetHotelDto>>(hotels);
-
-        return Ok(getHotels);
+        return Ok(hotels);
     }
 
-    // GET: api/Hotels/5
+    // GET: api/Hotels/?StartIndex=0&pagesize=25&PageNumber=1
+    [HttpGet]
+    public async Task<ActionResult<PagedResult<GetHotelDto>>> GetPagedHotels([FromQuery] QueryParameters queryParameters)
+    {
+        var hotels = await _hotelsRepository.GetAllAsync<GetHotelDto>(queryParameters);
+        return Ok(hotels);
+    }
+
+    // GET: api/v1/Hotels/5
     [HttpGet("{id}")]
     public async Task<ActionResult<HotelDto>> GetHotel(int id)
     {
         var hotel = await _hotelsRepository.GetDetails(id);
 
         if (hotel is null)
-            return NotFound();
+            throw new NotFoundException(nameof(GetHotel), id);
 
-        var getHotel = _mapper.Map<HotelDto>(hotel);
-
-        return Ok(getHotel);
+        return Ok(hotel);
     }
 
-    // PUT: api/Hotels/5
+    // PUT: api/v1/Hotels/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
     [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> PutHotel(int id, UpdateHotelDto updatedHotel)
     {
         if (id != updatedHotel.Id)
-            return BadRequest();
-
-        //_context.Entry(hotel).State = EntityState.Modified;
-
-        var hotel = await _hotelsRepository.GetAsync(id);
-
-        if (hotel is null)
-            return NotFound();
-
-        _mapper.Map(updatedHotel, hotel);
+            return BadRequest("Invalid Record Id");
 
         try
         {
-            await _hotelsRepository.UpdateAsync(hotel);
+            await _hotelsRepository.UpdateAsync(id, updatedHotel);
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -83,32 +81,22 @@ public class HotelsController : ControllerBase
         return NoContent();
     }
 
-    // POST: api/Hotels
+    // POST: api/v1/Hotels
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
     [Authorize(Roles = "Administrator")]
-    public async Task<ActionResult<Hotel>> PostHotel(CreateHotelDto createHotel)
+    public async Task<ActionResult<HotelDto>> PostHotel(CreateHotelDto createHotel)
     {
-        var hotel = _mapper.Map<Hotel>(createHotel);
-
-        if (hotel is null)
-            return Problem("Entity set 'DataContext.Hotels'  is null.");
-
-        await _hotelsRepository.AddAsync(hotel);
+        var hotel = await _hotelsRepository.AddAsync<CreateHotelDto, GetHotelDto>(createHotel);
 
         return CreatedAtAction("GetHotel", new { id = hotel.Id }, hotel);
     }
 
-    // DELETE: api/Hotels/5
+    // DELETE: api/v1/Hotels/5
     [HttpDelete("{id}")]
     [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> DeleteHotel(int id)
     {
-        var hotel = await _hotelsRepository.GetAsync(id);
-
-        if (hotel is null)
-            return NotFound();
-
         await _hotelsRepository.DeleteAsync(id);
 
         return NoContent();
@@ -117,6 +105,5 @@ public class HotelsController : ControllerBase
     private async Task<bool> HotelExists(int id)
     {
         return await _hotelsRepository.Exists(id);
-        //return (_context.Hotels?.Any(e => e.Id == id)).GetValueOrDefault();
     }
 }

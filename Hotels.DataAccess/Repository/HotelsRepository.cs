@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Hotels.DataAccess.Contracts;
 using Hotels.DataAccess.Data;
+using Hotels.Models.Dtos.Hotel;
+using Hotels.Models.Exceptions;
 using Hotels.Models.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,9 +19,18 @@ public class HotelsRepository : GenericRepository<Hotel>, IHotelsRepository
         _mapper = mapper;
     }
 
-    public async Task<Hotel> GetDetails(int id)
+    public async Task<HotelDto> GetDetails(int id)
     {
-        return await _context.Hotels.Include(q => q.Rooms).Include(q => q.Facilities)
-            .FirstOrDefaultAsync(q => q.Id == id);
+        //return await _context.Hotels.Include(q => q.Rooms).Include(q => q.Facilities)
+        //    .FirstOrDefaultAsync(q => q.Id == id);
+
+        var hotel = await _context.Hotels.Include(q => q.Rooms).Include(q => q.Facilities)
+        .ProjectTo<HotelDto>(_mapper.ConfigurationProvider)
+        .FirstOrDefaultAsync(q => q.Id == id);
+
+        if (hotel is null)
+            throw new NotFoundException(nameof(GetDetails), id);
+
+        return hotel;
     }
 }

@@ -2,11 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using Hotels.DataAccess.Data;
 using Hotels.Models.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hotels.API.Controllers;
 
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiController]
+[Authorize]
 public class FeedbacksController : ControllerBase
 {
     private readonly DataContext _context;
@@ -16,7 +18,7 @@ public class FeedbacksController : ControllerBase
         _context = context;
     }
 
-    // GET: api/Feedbacks
+    // GET: api/v1/Feedbacks
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Feedback>>> GetFeedbacks()
     {
@@ -27,7 +29,7 @@ public class FeedbacksController : ControllerBase
         return await _context.Feedbacks.ToListAsync();
     }
 
-    // GET: api/Feedbacks/5
+    // GET: api/v1/Feedbacks/5
     [HttpGet("{id}")]
     public async Task<ActionResult<Feedback>> GetFeedback(int id)
     {
@@ -45,7 +47,7 @@ public class FeedbacksController : ControllerBase
         return feedback;
     }
 
-    // PUT: api/Feedbacks/5
+    // PUT: api/v1/Feedbacks/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
     public async Task<IActionResult> PutFeedback(int id, Feedback feedback)
@@ -76,7 +78,7 @@ public class FeedbacksController : ControllerBase
         return NoContent();
     }
 
-    // POST: api/Feedbacks
+    // POST: api/v1/Feedbacks
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
     public async Task<ActionResult<Feedback>> PostFeedback(Feedback feedback)
@@ -91,7 +93,7 @@ public class FeedbacksController : ControllerBase
         return CreatedAtAction("GetFeedback", new { id = feedback.Id }, feedback);
     }
 
-    // DELETE: api/Feedbacks/5
+    // DELETE: api/v1/Feedbacks/5
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteFeedback(int id)
     {

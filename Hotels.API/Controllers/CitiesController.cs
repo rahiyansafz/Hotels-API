@@ -26,7 +26,7 @@ public class CitiesController : ControllerBase
         _logger = logger;
     }
 
-    // GET: api/Cities/GetAll
+    // GET: api/v1/Cities/GetAll
     [HttpGet("GetAll")]
     public async Task<ActionResult<IEnumerable<GetCityDto>>> GetCities()
     {
@@ -35,20 +35,18 @@ public class CitiesController : ControllerBase
         if (cities is null)
             return NotFound();
 
-        //var getCities = _mapper.Map<List<GetCityDto>>(cities);
-
         return Ok(cities);
     }
 
-    // GET: api/Cities/?StartIndex=0&pagesize=25&PageNumber=1
+    // GET: api/v1/Cities/?StartIndex=0&pagesize=25&PageNumber=1
     [HttpGet]
     public async Task<ActionResult<PagedResult<GetCityDto>>> GetPagedCities([FromQuery] QueryParameters queryParameters)
     {
-        var pagedCountriesResult = await _citiesRepository.GetAllAsync<GetCityDto>(queryParameters);
-        return Ok(pagedCountriesResult);
+        var cities = await _citiesRepository.GetAllAsync<GetCityDto>(queryParameters);
+        return Ok(cities);
     }
 
-    // GET: api/Cities/5
+    // GET: api/v1/Cities/5
     [HttpGet("{id}")]
     public async Task<ActionResult<CityDto>> GetCity(int id)
     {
@@ -60,7 +58,7 @@ public class CitiesController : ControllerBase
         return Ok(city);
     }
 
-    // PUT: api/Cities/5
+    // PUT: api/v1/Cities/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
     [Authorize(Roles = "Administrator")]
@@ -68,8 +66,6 @@ public class CitiesController : ControllerBase
     {
         if (id != updatedCity.Id)
             return BadRequest("Invalid Record Id");
-
-        //_context.Entry(city).State = EntityState.Modified;
 
         try
         {
@@ -86,7 +82,7 @@ public class CitiesController : ControllerBase
         return NoContent();
     }
 
-    // POST: api/Cities
+    // POST: api/v1/Cities
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
     [Authorize(Roles = "Administrator")]
@@ -97,7 +93,7 @@ public class CitiesController : ControllerBase
         return CreatedAtAction(nameof(GetCity), new { id = city.Id }, city);
     }
 
-    // DELETE: api/Cities/5
+    // DELETE: api/v1/Cities/5
     [HttpDelete("{id}")]
     [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> DeleteCity(int id)
@@ -110,6 +106,5 @@ public class CitiesController : ControllerBase
     private async Task<bool> CityExists(int id)
     {
         return await _citiesRepository.Exists(id);
-        //return (_context.Cities?.Any(e => e.Id == id)).GetValueOrDefault();
     }
 }

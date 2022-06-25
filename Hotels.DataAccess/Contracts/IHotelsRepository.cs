@@ -1,8 +1,9 @@
-﻿using Hotels.Models.Models;
+﻿using Hotels.Models.Dtos.Hotel;
+using Hotels.Models.Models;
 
 namespace Hotels.DataAccess.Contracts;
 
 public interface IHotelsRepository : IGenericRepository<Hotel>
 {
-    Task<Hotel> GetDetails(int id);
+    Task<HotelDto> GetDetails(int id);
 }
