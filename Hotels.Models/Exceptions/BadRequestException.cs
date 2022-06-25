@@ -1,4 +1,4 @@
-﻿namespace Hotels.API.Exceptions;
+﻿namespace Hotels.Models.Exceptions;
 
 public class BadRequestException : ApplicationException
 {

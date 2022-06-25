@@ -5,7 +5,7 @@ using Hotels.Models.Dtos.City;
 using AutoMapper;
 using Hotels.DataAccess.Contracts;
 using Microsoft.AspNetCore.Authorization;
-using Hotels.API.Exceptions;
+using Hotels.Models.Exceptions;
 
 namespace Hotels.API.Controllers;
 

@@ -1,4 +1,4 @@
-﻿using Hotels.API.Exceptions;
+﻿using Hotels.Models.Exceptions;
 using Newtonsoft.Json;
 using System.Net;
 
