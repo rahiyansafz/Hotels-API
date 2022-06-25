@@ -18,6 +18,6 @@ public class RoomsRepository : GenericRepository<Room>, IRoomsRepository
 
     public async Task<Room> GetDetails(int id)
     {
-        return await _context.Rooms.FirstOrDefaultAsync(q => q.Id == id);
+        return await _context.Rooms.Include(q => q.Amenities).FirstOrDefaultAsync(q => q.Id == id);
     }
 }

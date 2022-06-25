@@ -18,7 +18,7 @@ public class HotelsRepository : GenericRepository<Hotel>, IHotelsRepository
 
     public async Task<Hotel> GetDetails(int id)
     {
-        return await _context.Hotels.Include(q => q.Rooms)
+        return await _context.Hotels.Include(q => q.Rooms).Include(q => q.Facilities)
             .FirstOrDefaultAsync(q => q.Id == id);
     }
 }

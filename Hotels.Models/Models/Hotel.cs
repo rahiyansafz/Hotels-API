@@ -19,4 +19,6 @@ public class Hotel
     public City City { get; set; }
 
     public virtual IEnumerable<Room>? Rooms { get; set; }
+    public virtual IEnumerable<Facility>? Facilities { get; set; }
+
 }

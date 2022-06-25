@@ -23,4 +23,6 @@ public class Room
     [ForeignKey(nameof(HotelId))]
     public int HotelId { get; set; }
     public Hotel Hotel { get; set; }
+
+    public virtual IEnumerable<Amenity>? Amenities { get; set; }
 }
