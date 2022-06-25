@@ -6,6 +6,8 @@ using AutoMapper;
 using Hotels.DataAccess.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Hotels.Models.Exceptions;
+using Hotels.Models.Models.Response;
+using Hotels.Models.Models.QueryResponse;
 
 namespace Hotels.API.Controllers;
 
@@ -15,25 +17,35 @@ public class CitiesController : ControllerBase
 {
     private readonly IMapper _mapper;
     private readonly ICitiesRepository _citiesRepository;
+    private readonly ILogger<CitiesController> _logger;
 
-    public CitiesController(IMapper mapper, ICitiesRepository citiesRepository)
+    public CitiesController(IMapper mapper, ICitiesRepository citiesRepository, ILogger<CitiesController> logger)
     {
         _mapper = mapper;
         _citiesRepository = citiesRepository;
+        _logger = logger;
     }
 
-    // GET: api/Cities
-    [HttpGet]
+    // GET: api/Cities/GetAll
+    [HttpGet("GetAll")]
     public async Task<ActionResult<IEnumerable<GetCityDto>>> GetCities()
     {
-        var cities = await _citiesRepository.GetAllAsync();
+        var cities = await _citiesRepository.GetAllAsync<GetCityDto>();
 
         if (cities is null)
             return NotFound();
 
-        var getCities = _mapper.Map<List<GetCityDto>>(cities);
+        //var getCities = _mapper.Map<List<GetCityDto>>(cities);
 
-        return Ok(getCities);
+        return Ok(cities);
+    }
+
+    // GET: api/Cities/?StartIndex=0&pagesize=25&PageNumber=1
+    [HttpGet]
+    public async Task<ActionResult<PagedResult<GetCityDto>>> GetPagedCities([FromQuery] QueryParameters queryParameters)
+    {
+        var pagedCountriesResult = await _citiesRepository.GetAllAsync<GetCityDto>(queryParameters);
+        return Ok(pagedCountriesResult);
     }
 
     // GET: api/Cities/5
@@ -45,9 +57,7 @@ public class CitiesController : ControllerBase
         if (city is null)
             throw new NotFoundException(nameof(GetCity), id);
 
-        var getCity = _mapper.Map<CityDto>(city);
-
-        return Ok(getCity);
+        return Ok(city);
     }
 
     // PUT: api/Cities/5
@@ -61,16 +71,9 @@ public class CitiesController : ControllerBase
 
         //_context.Entry(city).State = EntityState.Modified;
 
-        var city = await _citiesRepository.GetAsync(id);
-
-        if (city is null)
-            throw new NotFoundException(nameof(GetCities), id);
-
-        _mapper.Map(updatedCity, city);
-
         try
         {
-            await _citiesRepository.UpdateAsync(city);
+            await _citiesRepository.UpdateAsync(id, updatedCity);
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -87,16 +90,11 @@ public class CitiesController : ControllerBase
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
     [Authorize(Roles = "Administrator")]
-    public async Task<ActionResult<City>> PostCity(CreateCityDto createCity)
+    public async Task<ActionResult<CityDto>> PostCity(CreateCityDto createCity)
     {
-        var city = _mapper.Map<City>(createCity);
+        var city = await _citiesRepository.AddAsync<CreateCityDto, GetCityDto>(createCity);
 
-        if (city is null)
-            return Problem("Entity set 'DataContext.Cities'  is null.");
-
-        await _citiesRepository.AddAsync(city);
-
-        return CreatedAtAction("GetCity", new { id = city.Id }, city);
+        return CreatedAtAction(nameof(GetCity), new { id = city.Id }, city);
     }
 
     // DELETE: api/Cities/5
@@ -104,11 +102,6 @@ public class CitiesController : ControllerBase
     [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> DeleteCity(int id)
     {
-        var city = await _citiesRepository.GetAsync(id);
-
-        if (city is null)
-            throw new NotFoundException(nameof(GetCities), id);
-
         await _citiesRepository.DeleteAsync(id);
 
         return NoContent();

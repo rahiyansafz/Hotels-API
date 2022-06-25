@@ -2,7 +2,7 @@
 
 namespace Hotels.Models.Dtos.City;
 
-public class GetCityDto : BaseCityDto
+public class GetCityDto : BaseCityDto, IBase
 {
     public int Id { get; set; }
 }
