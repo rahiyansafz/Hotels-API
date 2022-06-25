@@ -21,9 +21,6 @@ public class CitiesRepository : GenericRepository<City>, ICitiesRepository
 
     public async Task<CityDto> GetDetails(int id)
     {
-        //return await _context.Cities.Include(q => q.Hotels)
-        //    .FirstOrDefaultAsync(q => q.Id == id);
-
         var city = await _context.Cities.Include(q => q.Hotels)
                 .ProjectTo<CityDto>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(q => q.Id == id);

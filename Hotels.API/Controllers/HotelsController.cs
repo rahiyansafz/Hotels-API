@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Hotels.Models.Models.Response;
 using Hotels.Models.Models.QueryResponse;
 using Hotels.Models.Exceptions;
+using Microsoft.AspNetCore.OData.Query;
 
 namespace Hotels.API.Controllers;
 
@@ -27,13 +28,10 @@ public class HotelsController : ControllerBase
 
     // GET: api/v1/Hotels/GetAll
     [HttpGet("GetAll")]
+    [EnableQuery]
     public async Task<ActionResult<IEnumerable<GetHotelDto>>> GetHotels()
     {
         var hotels = await _hotelsRepository.GetAllAsync<GetHotelDto>();
-
-        if (hotels is null)
-            return NotFound();
-
         return Ok(hotels);
     }
 
@@ -50,10 +48,6 @@ public class HotelsController : ControllerBase
     public async Task<ActionResult<HotelDto>> GetHotel(int id)
     {
         var hotel = await _hotelsRepository.GetDetails(id);
-
-        if (hotel is null)
-            throw new NotFoundException(nameof(GetHotel), id);
-
         return Ok(hotel);
     }
 
@@ -88,7 +82,6 @@ public class HotelsController : ControllerBase
     public async Task<ActionResult<HotelDto>> PostHotel(CreateHotelDto createHotel)
     {
         var hotel = await _hotelsRepository.AddAsync<CreateHotelDto, GetHotelDto>(createHotel);
-
         return CreatedAtAction("GetHotel", new { id = hotel.Id }, hotel);
     }
 
@@ -98,7 +91,6 @@ public class HotelsController : ControllerBase
     public async Task<IActionResult> DeleteHotel(int id)
     {
         await _hotelsRepository.DeleteAsync(id);
-
         return NoContent();
     }
 

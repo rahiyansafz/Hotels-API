@@ -96,6 +96,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     public async Task<TResult> GetAsync<TResult>(int? id)
     {
         var result = await _context.Set<T>().FindAsync(id);
+
         if (result is null)
             throw new NotFoundException(typeof(T).Name, id.HasValue ? id : "No Key Provided");
 
@@ -111,9 +112,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     public async Task UpdateAsync<TSource>(int id, TSource source) where TSource : IBase
     {
         if (id != source.Id)
-        {
             throw new BadRequestException("Invalid Id used in request");
-        }
 
         var entity = await GetAsync(id);
 

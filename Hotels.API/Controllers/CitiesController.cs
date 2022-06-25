@@ -31,10 +31,6 @@ public class CitiesController : ControllerBase
     public async Task<ActionResult<IEnumerable<GetCityDto>>> GetCities()
     {
         var cities = await _citiesRepository.GetAllAsync<GetCityDto>();
-
-        if (cities is null)
-            return NotFound();
-
         return Ok(cities);
     }
 
@@ -51,10 +47,6 @@ public class CitiesController : ControllerBase
     public async Task<ActionResult<CityDto>> GetCity(int id)
     {
         var city = await _citiesRepository.GetDetails(id);
-
-        if (city is null)
-            throw new NotFoundException(nameof(GetCity), id);
-
         return Ok(city);
     }
 
@@ -89,7 +81,6 @@ public class CitiesController : ControllerBase
     public async Task<ActionResult<CityDto>> PostCity(CreateCityDto createCity)
     {
         var city = await _citiesRepository.AddAsync<CreateCityDto, GetCityDto>(createCity);
-
         return CreatedAtAction(nameof(GetCity), new { id = city.Id }, city);
     }
 
@@ -99,7 +90,6 @@ public class CitiesController : ControllerBase
     public async Task<IActionResult> DeleteCity(int id)
     {
         await _citiesRepository.DeleteAsync(id);
-
         return NoContent();
     }
 

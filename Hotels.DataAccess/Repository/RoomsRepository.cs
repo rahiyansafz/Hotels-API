@@ -21,8 +21,6 @@ public class RoomsRepository : GenericRepository<Room>, IRoomsRepository
 
     public async Task<RoomDto> GetDetails(int id)
     {
-        //return await _context.Rooms.Include(q => q.Amenities).FirstOrDefaultAsync(q => q.Id == id);
-
         var room = await _context.Rooms.Include(q => q.Amenities)
                 .ProjectTo<RoomDto>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(q => q.Id == id);

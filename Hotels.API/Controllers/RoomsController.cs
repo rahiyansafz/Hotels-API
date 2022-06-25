@@ -30,10 +30,6 @@ public class RoomsController : ControllerBase
     public async Task<ActionResult<IEnumerable<GetRoomDto>>> GetRooms()
     {
         var rooms = await _roomsRepository.GetAllAsync<GetRoomDto>();
-
-        if (rooms is null)
-            return NotFound();
-
         return Ok(rooms);
     }
 
@@ -50,10 +46,6 @@ public class RoomsController : ControllerBase
     public async Task<ActionResult<RoomDto>> GetRoom(int id)
     {
         var room = await _roomsRepository.GetDetails(id);
-
-        if (room is null)
-            throw new NotFoundException(nameof(GetRoom), id);
-
         return Ok(room);
     }
 
@@ -88,7 +80,6 @@ public class RoomsController : ControllerBase
     public async Task<ActionResult<RoomDto>> PostRoom(CreateRoomDto createRoom)
     {
         var room = await _roomsRepository.AddAsync<CreateRoomDto, GetRoomDto>(createRoom);
-
         return CreatedAtAction("GetRoom", new { id = room.Id }, room);
     }
 
@@ -98,7 +89,6 @@ public class RoomsController : ControllerBase
     public async Task<IActionResult> DeleteRoom(int id)
     {
         await _roomsRepository.DeleteAsync(id);
-
         return NoContent();
     }
 
