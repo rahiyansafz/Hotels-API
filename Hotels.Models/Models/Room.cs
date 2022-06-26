@@ -8,6 +8,7 @@ public class Room
     public string Name { get; set; } = string.Empty;
     public RoomType Type { get; set; } = RoomType.Single;
     public bool IsAvailable { get; set; }
+    public bool IsTrending { get; set; }
     public DateTime CheckIn { get; set; }
     public DateTime CheckOut { get; set; }
     public string DisplayPrice { get; set; } = string.Empty;
