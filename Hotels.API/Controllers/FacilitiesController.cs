@@ -23,7 +23,7 @@ public class FacilitiesController : ControllerBase
     }
 
     // GET: api/v1/Facilities
-    [HttpGet("GetAll")]
+    [HttpGet]
     public async Task<ActionResult<IEnumerable<FacilityDto>>> GetFacilities()
     {
         var facilities = await _facilitiesRepository.GetAllAsync<FacilityDto>();

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Hotels.Models.Dtos.Amenity;
 using Hotels.Models.Dtos.City;
 using Hotels.Models.Dtos.Facility;
 using Hotels.Models.Dtos.Hotel;
@@ -31,6 +32,9 @@ public class MapperConfig : Profile
 
         CreateMap<Facility, FacilityDto>().ReverseMap();
         CreateMap<Facility, CreateFacilityDto>().ReverseMap();
+
+        CreateMap<Amenity, AmenityDto>().ReverseMap();
+        CreateMap<Amenity, CreateAmenityDto>().ReverseMap();
 
         CreateMap<UserDto, User>().ReverseMap();
     }
