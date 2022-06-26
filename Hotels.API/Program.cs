@@ -99,6 +99,7 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 builder.Services.AddScoped<ICitiesRepository, CitiesRepository>();
 builder.Services.AddScoped<IHotelsRepository, HotelsRepository>();
 builder.Services.AddScoped<IRoomsRepository, RoomsRepository>();
+builder.Services.AddScoped<IFacilitiesRepository, FacilitiesRepository>();
 builder.Services.AddScoped<IAuthManager, AuthManager>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 

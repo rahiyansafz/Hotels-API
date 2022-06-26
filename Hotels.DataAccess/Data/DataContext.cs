@@ -16,8 +16,6 @@ public class DataContext : IdentityDbContext<User>
     public DbSet<Hotel> Hotels { get; set; }
     public DbSet<City> Cities { get; set; }
     public DbSet<Room> Rooms { get; set; }
-    public DbSet<Feedback> Feedbacks { get; set; }
-    public DbSet<Booking> Bookings { get; set; }
     public DbSet<Amenity> Amenities { get; set; }
     public DbSet<Facility> Facilities { get; set; }
 
@@ -28,5 +26,7 @@ public class DataContext : IdentityDbContext<User>
         modelBuilder.ApplyConfiguration(new CityConfiguration());
         modelBuilder.ApplyConfiguration(new HotelConfiguration());
         modelBuilder.ApplyConfiguration(new RoomConfiguration());
+        modelBuilder.ApplyConfiguration(new FacilityConfiguration());
+        modelBuilder.ApplyConfiguration(new AmenityConfiguration());
     }
 }

@@ -22,6 +22,131 @@ namespace Hotels.DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("Hotels.Models.Models.Amenity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("AirConditioning")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Dishwasher")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ElectricKettle")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("FreeWifi")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("InSuiteLaundry")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IroningSet")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("KingBedCount")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Microwave")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("MountainOrHillView")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("NonSmokingRoom")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("QueenBedCount")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("RoomId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("SofaBedCount")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("StockedKitchen")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("StreamingDevice")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Television")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoomId");
+
+                    b.ToTable("Amenities");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AirConditioning = true,
+                            Dishwasher = true,
+                            ElectricKettle = true,
+                            FreeWifi = true,
+                            InSuiteLaundry = true,
+                            IroningSet = true,
+                            KingBedCount = true,
+                            Microwave = true,
+                            MountainOrHillView = true,
+                            NonSmokingRoom = true,
+                            QueenBedCount = true,
+                            RoomId = 1,
+                            SofaBedCount = true,
+                            StockedKitchen = true,
+                            StreamingDevice = true,
+                            Television = true
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AirConditioning = true,
+                            Dishwasher = true,
+                            ElectricKettle = true,
+                            FreeWifi = true,
+                            InSuiteLaundry = true,
+                            IroningSet = true,
+                            KingBedCount = true,
+                            Microwave = true,
+                            MountainOrHillView = true,
+                            NonSmokingRoom = true,
+                            QueenBedCount = true,
+                            RoomId = 2,
+                            SofaBedCount = true,
+                            StockedKitchen = true,
+                            StreamingDevice = true,
+                            Television = true
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AirConditioning = true,
+                            Dishwasher = true,
+                            ElectricKettle = true,
+                            FreeWifi = true,
+                            InSuiteLaundry = true,
+                            IroningSet = true,
+                            KingBedCount = true,
+                            Microwave = true,
+                            MountainOrHillView = true,
+                            NonSmokingRoom = true,
+                            QueenBedCount = true,
+                            RoomId = 3,
+                            SofaBedCount = true,
+                            StockedKitchen = true,
+                            StreamingDevice = true,
+                            Television = true
+                        });
+                });
+
             modelBuilder.Entity("Hotels.Models.Models.Auth.User", b =>
                 {
                     b.Property<string>("Id")
@@ -111,6 +236,9 @@ namespace Hotels.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsFeatured")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -125,6 +253,7 @@ namespace Hotels.DataAccess.Migrations
                             Id = 1,
                             Country = "Bangladesh",
                             Division = "Dhaka",
+                            IsFeatured = true,
                             Name = "Dhaka"
                         },
                         new
@@ -132,6 +261,7 @@ namespace Hotels.DataAccess.Migrations
                             Id = 2,
                             Country = "Bangladesh",
                             Division = "Chittagong",
+                            IsFeatured = true,
                             Name = "Chittagong"
                         },
                         new
@@ -139,7 +269,115 @@ namespace Hotels.DataAccess.Migrations
                             Id = 3,
                             Country = "Bangladesh",
                             Division = "Comilla",
+                            IsFeatured = true,
                             Name = "Comilla"
+                        });
+                });
+
+            modelBuilder.Entity("Hotels.Models.Models.Facility", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("ContactLessCheckIn")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ElevatorAccess")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("FitnessCenter")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("FreeParking")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("FreeWifi")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("HotelId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IndoorGames")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LoungeAndWorkSpace")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LuggageStorage")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("OutdoorSpace")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ProfessionalyClean")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Support24by7")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("SwimmingPool")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HotelId");
+
+                    b.ToTable("Facilities");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ContactLessCheckIn = true,
+                            ElevatorAccess = true,
+                            FitnessCenter = true,
+                            FreeParking = true,
+                            FreeWifi = true,
+                            HotelId = 1,
+                            IndoorGames = true,
+                            LoungeAndWorkSpace = true,
+                            LuggageStorage = true,
+                            OutdoorSpace = true,
+                            ProfessionalyClean = true,
+                            Support24by7 = true,
+                            SwimmingPool = true
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ContactLessCheckIn = true,
+                            ElevatorAccess = true,
+                            FitnessCenter = true,
+                            FreeParking = true,
+                            FreeWifi = true,
+                            HotelId = 2,
+                            IndoorGames = true,
+                            LoungeAndWorkSpace = true,
+                            LuggageStorage = true,
+                            OutdoorSpace = true,
+                            ProfessionalyClean = true,
+                            Support24by7 = true,
+                            SwimmingPool = true
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ContactLessCheckIn = true,
+                            ElevatorAccess = true,
+                            FitnessCenter = true,
+                            FreeParking = true,
+                            FreeWifi = true,
+                            HotelId = 3,
+                            IndoorGames = true,
+                            LoungeAndWorkSpace = true,
+                            LuggageStorage = true,
+                            OutdoorSpace = true,
+                            ProfessionalyClean = true,
+                            Support24by7 = true,
+                            SwimmingPool = true
                         });
                 });
 
@@ -272,6 +510,9 @@ namespace Hotels.DataAccess.Migrations
                     b.Property<bool>("IsFavourite")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsTrending")
+                        .HasColumnType("bit");
+
                     b.Property<int>("MaxOccupancies")
                         .HasColumnType("int");
 
@@ -306,6 +547,7 @@ namespace Hotels.DataAccess.Migrations
                             IsAvailable = true,
                             IsBooked = false,
                             IsFavourite = false,
+                            IsTrending = true,
                             MaxOccupancies = 6,
                             Name = "Studio Apartment",
                             ServiceCharge = 15.0,
@@ -325,6 +567,7 @@ namespace Hotels.DataAccess.Migrations
                             IsAvailable = true,
                             IsBooked = false,
                             IsFavourite = false,
+                            IsTrending = true,
                             MaxOccupancies = 6,
                             Name = "Double Deluxe",
                             ServiceCharge = 15.0,
@@ -344,6 +587,7 @@ namespace Hotels.DataAccess.Migrations
                             IsAvailable = true,
                             IsBooked = false,
                             IsFavourite = false,
+                            IsTrending = true,
                             MaxOccupancies = 6,
                             Name = "Twin Deluxe",
                             ServiceCharge = 15.0,
@@ -380,15 +624,15 @@ namespace Hotels.DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "3fa08c38-66d8-43f1-b584-b636f36301d1",
-                            ConcurrencyStamp = "effc041d-0c81-4d4f-9a0c-64e64efc74ca",
+                            Id = "85b16656-6782-4dd0-9705-9dc105d64443",
+                            ConcurrencyStamp = "0f41cf4e-f900-4010-92b1-1f14eeb39866",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "278877c3-993f-4d16-b32f-77a43c03b2c3",
-                            ConcurrencyStamp = "ce0b6597-d392-4d41-bae7-b8c1e438f674",
+                            Id = "e8680a88-4434-43f7-9e96-d5784ff89383",
+                            ConcurrencyStamp = "da7e2fd1-b557-4b70-8086-17793ea91adb",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -500,6 +744,28 @@ namespace Hotels.DataAccess.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Hotels.Models.Models.Amenity", b =>
+                {
+                    b.HasOne("Hotels.Models.Models.Room", "Room")
+                        .WithMany("Amenities")
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("Hotels.Models.Models.Facility", b =>
+                {
+                    b.HasOne("Hotels.Models.Models.Hotel", "Hotel")
+                        .WithMany("Facilities")
+                        .HasForeignKey("HotelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Hotel");
+                });
+
             modelBuilder.Entity("Hotels.Models.Models.Hotel", b =>
                 {
                     b.HasOne("Hotels.Models.Models.City", "City")
@@ -580,7 +846,14 @@ namespace Hotels.DataAccess.Migrations
 
             modelBuilder.Entity("Hotels.Models.Models.Hotel", b =>
                 {
+                    b.Navigation("Facilities");
+
                     b.Navigation("Rooms");
+                });
+
+            modelBuilder.Entity("Hotels.Models.Models.Room", b =>
+                {
+                    b.Navigation("Amenities");
                 });
 #pragma warning restore 612, 618
         }

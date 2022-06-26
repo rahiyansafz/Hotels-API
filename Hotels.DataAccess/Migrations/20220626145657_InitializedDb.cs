@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Hotels.DataAccess.Migrations
 {
-    public partial class DbInitializedWithIdentity : Migration
+    public partial class InitializedDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -58,7 +58,8 @@ namespace Hotels.DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Division = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Division = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsFeatured = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -199,6 +200,37 @@ namespace Hotels.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Facilities",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ElevatorAccess = table.Column<bool>(type: "bit", nullable: false),
+                    FitnessCenter = table.Column<bool>(type: "bit", nullable: false),
+                    ContactLessCheckIn = table.Column<bool>(type: "bit", nullable: false),
+                    ProfessionalyClean = table.Column<bool>(type: "bit", nullable: false),
+                    Support24by7 = table.Column<bool>(type: "bit", nullable: false),
+                    OutdoorSpace = table.Column<bool>(type: "bit", nullable: false),
+                    SwimmingPool = table.Column<bool>(type: "bit", nullable: false),
+                    FreeParking = table.Column<bool>(type: "bit", nullable: false),
+                    FreeWifi = table.Column<bool>(type: "bit", nullable: false),
+                    LuggageStorage = table.Column<bool>(type: "bit", nullable: false),
+                    IndoorGames = table.Column<bool>(type: "bit", nullable: false),
+                    LoungeAndWorkSpace = table.Column<bool>(type: "bit", nullable: false),
+                    HotelId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Facilities", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Facilities_Hotels_HotelId",
+                        column: x => x.HotelId,
+                        principalTable: "Hotels",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Rooms",
                 columns: table => new
                 {
@@ -207,6 +239,7 @@ namespace Hotels.DataAccess.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
                     IsAvailable = table.Column<bool>(type: "bit", nullable: false),
+                    IsTrending = table.Column<bool>(type: "bit", nullable: false),
                     CheckIn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CheckOut = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DisplayPrice = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -231,23 +264,57 @@ namespace Hotels.DataAccess.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Amenities",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    KingBedCount = table.Column<bool>(type: "bit", nullable: false),
+                    QueenBedCount = table.Column<bool>(type: "bit", nullable: false),
+                    SofaBedCount = table.Column<bool>(type: "bit", nullable: false),
+                    Dishwasher = table.Column<bool>(type: "bit", nullable: false),
+                    Microwave = table.Column<bool>(type: "bit", nullable: false),
+                    ElectricKettle = table.Column<bool>(type: "bit", nullable: false),
+                    IroningSet = table.Column<bool>(type: "bit", nullable: false),
+                    AirConditioning = table.Column<bool>(type: "bit", nullable: false),
+                    Television = table.Column<bool>(type: "bit", nullable: false),
+                    FreeWifi = table.Column<bool>(type: "bit", nullable: false),
+                    InSuiteLaundry = table.Column<bool>(type: "bit", nullable: false),
+                    StreamingDevice = table.Column<bool>(type: "bit", nullable: false),
+                    StockedKitchen = table.Column<bool>(type: "bit", nullable: false),
+                    MountainOrHillView = table.Column<bool>(type: "bit", nullable: false),
+                    NonSmokingRoom = table.Column<bool>(type: "bit", nullable: false),
+                    RoomId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Amenities", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Amenities_Rooms_RoomId",
+                        column: x => x.RoomId,
+                        principalTable: "Rooms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "278877c3-993f-4d16-b32f-77a43c03b2c3", "ce0b6597-d392-4d41-bae7-b8c1e438f674", "User", "USER" },
-                    { "3fa08c38-66d8-43f1-b584-b636f36301d1", "effc041d-0c81-4d4f-9a0c-64e64efc74ca", "Administrator", "ADMINISTRATOR" }
+                    { "85b16656-6782-4dd0-9705-9dc105d64443", "0f41cf4e-f900-4010-92b1-1f14eeb39866", "Administrator", "ADMINISTRATOR" },
+                    { "e8680a88-4434-43f7-9e96-d5784ff89383", "da7e2fd1-b557-4b70-8086-17793ea91adb", "User", "USER" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Cities",
-                columns: new[] { "Id", "Country", "Division", "Name" },
+                columns: new[] { "Id", "Country", "Division", "IsFeatured", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Bangladesh", "Dhaka", "Dhaka" },
-                    { 2, "Bangladesh", "Chittagong", "Chittagong" },
-                    { 3, "Bangladesh", "Comilla", "Comilla" }
+                    { 1, "Bangladesh", "Dhaka", true, "Dhaka" },
+                    { 2, "Bangladesh", "Chittagong", true, "Chittagong" },
+                    { 3, "Bangladesh", "Comilla", true, "Comilla" }
                 });
 
             migrationBuilder.InsertData(
@@ -266,19 +333,44 @@ namespace Hotels.DataAccess.Migrations
                 values: new object[] { 3, "931 Laksham Rd, Cumilla-3501", 3, "Laid-back hotel featuring a restaurant & a fitness room, as well as breakfast & parking.", 25000.0, 4000.0, "OASIS Hotel", 3, 4.0, 44 });
 
             migrationBuilder.InsertData(
-                table: "Rooms",
-                columns: new[] { "Id", "BathroomCount", "BedCount", "CheckIn", "CheckOut", "DiscountedPrice", "DisplayPrice", "DisplayPriceRaw", "HotelId", "IsAvailable", "IsBooked", "IsFavourite", "MaxOccupancies", "Name", "ServiceCharge", "Type" },
-                values: new object[] { 1, 2, 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", "$321", 321.35000000000002, 1, true, false, false, 6, "Studio Apartment", 15.0, 8 });
+                table: "Facilities",
+                columns: new[] { "Id", "ContactLessCheckIn", "ElevatorAccess", "FitnessCenter", "FreeParking", "FreeWifi", "HotelId", "IndoorGames", "LoungeAndWorkSpace", "LuggageStorage", "OutdoorSpace", "ProfessionalyClean", "Support24by7", "SwimmingPool" },
+                values: new object[,]
+                {
+                    { 1, true, true, true, true, true, 1, true, true, true, true, true, true, true },
+                    { 2, true, true, true, true, true, 2, true, true, true, true, true, true, true },
+                    { 3, true, true, true, true, true, 3, true, true, true, true, true, true, true }
+                });
 
             migrationBuilder.InsertData(
                 table: "Rooms",
-                columns: new[] { "Id", "BathroomCount", "BedCount", "CheckIn", "CheckOut", "DiscountedPrice", "DisplayPrice", "DisplayPriceRaw", "HotelId", "IsAvailable", "IsBooked", "IsFavourite", "MaxOccupancies", "Name", "ServiceCharge", "Type" },
-                values: new object[] { 2, 2, 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", "$321", 321.35000000000002, 2, true, false, false, 6, "Double Deluxe", 15.0, 4 });
+                columns: new[] { "Id", "BathroomCount", "BedCount", "CheckIn", "CheckOut", "DiscountedPrice", "DisplayPrice", "DisplayPriceRaw", "HotelId", "IsAvailable", "IsBooked", "IsFavourite", "IsTrending", "MaxOccupancies", "Name", "ServiceCharge", "Type" },
+                values: new object[,]
+                {
+                    { 1, 2, 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", "$321", 321.35000000000002, 1, true, false, false, true, 6, "Studio Apartment", 15.0, 8 },
+                    { 2, 2, 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", "$321", 321.35000000000002, 2, true, false, false, true, 6, "Double Deluxe", 15.0, 4 },
+                    { 3, 2, 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", "$321", 321.35000000000002, 3, true, false, false, true, 6, "Twin Deluxe", 15.0, 5 }
+                });
 
             migrationBuilder.InsertData(
-                table: "Rooms",
-                columns: new[] { "Id", "BathroomCount", "BedCount", "CheckIn", "CheckOut", "DiscountedPrice", "DisplayPrice", "DisplayPriceRaw", "HotelId", "IsAvailable", "IsBooked", "IsFavourite", "MaxOccupancies", "Name", "ServiceCharge", "Type" },
-                values: new object[] { 3, 2, 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", "$321", 321.35000000000002, 3, true, false, false, 6, "Twin Deluxe", 15.0, 5 });
+                table: "Amenities",
+                columns: new[] { "Id", "AirConditioning", "Dishwasher", "ElectricKettle", "FreeWifi", "InSuiteLaundry", "IroningSet", "KingBedCount", "Microwave", "MountainOrHillView", "NonSmokingRoom", "QueenBedCount", "RoomId", "SofaBedCount", "StockedKitchen", "StreamingDevice", "Television" },
+                values: new object[] { 1, true, true, true, true, true, true, true, true, true, true, true, 1, true, true, true, true });
+
+            migrationBuilder.InsertData(
+                table: "Amenities",
+                columns: new[] { "Id", "AirConditioning", "Dishwasher", "ElectricKettle", "FreeWifi", "InSuiteLaundry", "IroningSet", "KingBedCount", "Microwave", "MountainOrHillView", "NonSmokingRoom", "QueenBedCount", "RoomId", "SofaBedCount", "StockedKitchen", "StreamingDevice", "Television" },
+                values: new object[] { 2, true, true, true, true, true, true, true, true, true, true, true, 2, true, true, true, true });
+
+            migrationBuilder.InsertData(
+                table: "Amenities",
+                columns: new[] { "Id", "AirConditioning", "Dishwasher", "ElectricKettle", "FreeWifi", "InSuiteLaundry", "IroningSet", "KingBedCount", "Microwave", "MountainOrHillView", "NonSmokingRoom", "QueenBedCount", "RoomId", "SofaBedCount", "StockedKitchen", "StreamingDevice", "Television" },
+                values: new object[] { 3, true, true, true, true, true, true, true, true, true, true, true, 3, true, true, true, true });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Amenities_RoomId",
+                table: "Amenities",
+                column: "RoomId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -320,6 +412,11 @@ namespace Hotels.DataAccess.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Facilities_HotelId",
+                table: "Facilities",
+                column: "HotelId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Hotels_CityId",
                 table: "Hotels",
                 column: "CityId");
@@ -332,6 +429,9 @@ namespace Hotels.DataAccess.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Amenities");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -346,6 +446,9 @@ namespace Hotels.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Facilities");
 
             migrationBuilder.DropTable(
                 name: "Rooms");
