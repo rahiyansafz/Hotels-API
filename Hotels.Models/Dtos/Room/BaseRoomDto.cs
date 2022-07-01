@@ -12,8 +12,6 @@ public class BaseRoomDto
     [Required]
     public bool IsAvailable { get; set; }
     public bool IsTrending { get; set; }
-    public DateTime CheckIn { get; set; }
-    public DateTime CheckOut { get; set; }
     [Required]
     public string DisplayPrice { get; set; } = string.Empty;
     [Required]

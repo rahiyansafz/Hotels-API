@@ -71,7 +71,7 @@ public class AuthManager : IAuthManager
         var result = await _userManager.CreateAsync(_user, userDto.Password);
 
         if (result.Succeeded)
-            await _userManager.AddToRoleAsync(_user, "Administrator");
+            await _userManager.AddToRoleAsync(_user, "User");
 
         return result.Errors;
     }
