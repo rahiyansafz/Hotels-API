@@ -131,7 +131,7 @@ builder.Services.AddResponseCaching(options =>
 
 builder.Services.AddControllers().AddOData(options =>
 {
-    options.Select().Filter().OrderBy();
+    options.Select().Filter().OrderBy().Count().Expand().EnableQueryFeatures();
 });
 
 var app = builder.Build();
