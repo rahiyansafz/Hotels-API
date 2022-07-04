@@ -9,6 +9,8 @@ public class Room
     public RoomType Type { get; set; } = RoomType.Single;
     public bool IsAvailable { get; set; }
     public bool IsTrending { get; set; }
+    public DateTime CheckIn { get; set; }
+    public DateTime CheckOut { get; set; }
     public string DisplayPrice { get; set; } = string.Empty;
     public double DisplayPriceRaw { get; set; }
     public int MaxOccupancies { get; set; }

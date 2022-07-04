@@ -6,18 +6,10 @@ namespace Hotels.Models.Models;
 public class Booking
 {
     public int Id { get; set; }
-    public DateTime CheckIn { get; set; }
-    public DateTime CheckOut { get; set; }
-
-    [ForeignKey(nameof(HotelId))]
-    public int HotelId { get; set; }
-    public Hotel Hotel { get; set; }
-
-    [ForeignKey(nameof(RoomId))]
-    public int RoomId { get; set; }
-    public Room Room { get; set; }
-
-    [ForeignKey(nameof(UserId))]
-    public int UserId { get; set; }
-    public User User { get; set; }
+    [ForeignKey(nameof(HotelId))] public int HotelId { get; set; }
+    [NotMapped] public virtual Hotel Hotel { get; set; }
+    [ForeignKey(nameof(RoomId))] public int RoomId { get; set; }
+    [NotMapped] public virtual Room Room { get; set; }
+    public string UserId { get; set; }
+    [NotMapped] public virtual User User { get; set; }
 }

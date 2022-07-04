@@ -1,4 +1,5 @@
 using Hotels.API.Middlewares;
+using Hotels.API.Services;
 using Hotels.DataAccess.Contracts;
 using Hotels.DataAccess.Data;
 using Hotels.DataAccess.Repository;
@@ -103,6 +104,7 @@ builder.Services.AddScoped<IFacilitiesRepository, FacilitiesRepository>();
 builder.Services.AddScoped<IAmenitiesRepository, AmenitiesRepository>();
 builder.Services.AddScoped<IAuthManager, AuthManager>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddSingleton<ICurrentUserService, CurrentUserService>();
 
 builder.Services.AddAuthentication(options =>
 {

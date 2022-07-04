@@ -7,6 +7,7 @@ using Hotels.Models.Dtos.Room;
 using Hotels.Models.Dtos.User;
 using Hotels.Models.Models;
 using Hotels.Models.Models.Auth;
+using Hotels.Models.Requests;
 
 namespace Hotels.Models.Configurations;
 
@@ -37,5 +38,8 @@ public class MapperConfig : Profile
         CreateMap<Amenity, CreateAmenityDto>().ReverseMap();
 
         CreateMap<UserDto, User>().ReverseMap();
+
+        CreateMap<Booking, BookingRequest>();
+        CreateMap<BookingRequest, Booking>();
     }
 }
