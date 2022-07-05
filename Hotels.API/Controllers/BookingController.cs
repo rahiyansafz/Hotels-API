@@ -4,6 +4,7 @@ using Hotels.DataAccess.Contracts;
 using Hotels.DataAccess.Data;
 using Hotels.Models.Models;
 using Hotels.Models.Requests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +32,7 @@ public class BookingController : ControllerBase
     private string GetUserRole() => _currentUserService?.UserRole!;
 
     [HttpGet]
+    [Authorize]
     public async Task<ActionResult<IEnumerable<Booking>>> GetBookings()
     {
         var bookings = GetUserRole().Equals("Administrator") ? await _context.Bookings.ToListAsync() : await _context.Bookings.Where(c => c.UserId == GetUserId()).ToListAsync();
@@ -38,6 +40,7 @@ public class BookingController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<ActionResult<Booking>> GetBooking(int id)
     {
         var booking = GetUserRole().Equals("Administrator") ? await _context.Bookings.FindAsync(id) : await _context.Bookings.FirstOrDefaultAsync(c => c.Id == id && c.UserId == GetUserId());
@@ -46,6 +49,7 @@ public class BookingController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> PutBooking(int id, Booking booking)
     {
         if (id != booking.Id)
@@ -69,6 +73,7 @@ public class BookingController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<ActionResult<Booking>> PostBooking(BookingRequest booking)
     {
         var requestedRoom = await _roomsRepository.GetDetails(booking.RoomId);
@@ -88,6 +93,8 @@ public class BookingController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize]
+    [Authorize(Roles = "Administrator")]
     public async Task<IActionResult> DeleteBooking(int id)
     {
         var booking = await _context.Bookings.FindAsync(id);
