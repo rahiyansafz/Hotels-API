@@ -27,16 +27,14 @@ public class BookingController : ControllerBase
         _currentUserService = currentUserService;
     }
 
-
     private string GetUserId() => _currentUserService?.UserId!;
     private string GetUserRole() => _currentUserService?.UserRole!;
 
-     [HttpGet]
+    [HttpGet]
     public async Task<ActionResult<IEnumerable<Booking>>> GetBookings()
     {
-        var getList = GetUserRole().Equals("Administrator") ? await _context.Bookings.ToListAsync() : await _context.Bookings.Where(c => c.UserId == GetUserId()).ToListAsync();
-
-        return getList;
+        var bookings = GetUserRole().Equals("Administrator") ? await _context.Bookings.ToListAsync() : await _context.Bookings.Where(c => c.UserId == GetUserId()).ToListAsync();
+        return bookings;
     }
 
     [HttpGet("{id}")]
