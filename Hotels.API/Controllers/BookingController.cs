@@ -19,18 +19,23 @@ public class BookingController : ControllerBase
     private readonly IMapper _mapper;
     private readonly ICurrentUserService _currentUserService;
 
-    public BookingController(DataContext context, IRoomsRepository roomsRepository, IMapper mapper
-    , ICurrentUserService currentUserService)
+    public BookingController(DataContext context, IRoomsRepository roomsRepository, IMapper mapper, ICurrentUserService currentUserService)
     {
         _roomsRepository = roomsRepository;
         _context = context;
         _mapper = mapper;
         _currentUserService = currentUserService;
     }
+
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Booking>>> GetBookings()
     {
-        return await _context.Bookings.ToListAsync();
+        var filteredRoles = _currentUserService?.UserRole;
+        var filteredId = _currentUserService?.UserId;
+
+        var getList = filteredRoles!.Equals("Administrator") ? await _context.Bookings.ToListAsync() : await _context.Bookings.Where(c => c.UserId == filteredId).ToListAsync();
+
+        return getList;
     }
 
     [HttpGet("{id}")]
