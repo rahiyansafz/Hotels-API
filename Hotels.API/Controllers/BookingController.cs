@@ -27,13 +27,14 @@ public class BookingController : ControllerBase
         _currentUserService = currentUserService;
     }
 
-    [HttpGet]
+
+    private string GetUserId() => _currentUserService?.UserId!;
+    private string GetUserRole() => _currentUserService?.UserRole!;
+
+     [HttpGet]
     public async Task<ActionResult<IEnumerable<Booking>>> GetBookings()
     {
-        var filteredRoles = _currentUserService?.UserRole;
-        var filteredId = _currentUserService?.UserId;
-
-        var getList = filteredRoles!.Equals("Administrator") ? await _context.Bookings.ToListAsync() : await _context.Bookings.Where(c => c.UserId == filteredId).ToListAsync();
+        var getList = GetUserRole().Equals("Administrator") ? await _context.Bookings.ToListAsync() : await _context.Bookings.Where(c => c.UserId == GetUserId()).ToListAsync();
 
         return getList;
     }
@@ -41,10 +42,7 @@ public class BookingController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<Booking>> GetBooking(int id)
     {
-        var filteredRoles = _currentUserService?.UserRole;
-        var filteredId = _currentUserService?.UserId;
-
-        var booking = filteredRoles!.Equals("Administrator") ? await _context.Bookings.FindAsync(id) : await _context.Bookings.FirstOrDefaultAsync(c => c.Id == id && c.UserId == filteredId);
+        var booking = GetUserRole().Equals("Administrator") ? await _context.Bookings.FindAsync(id) : await _context.Bookings.FirstOrDefaultAsync(c => c.Id == id && c.UserId == GetUserId());
         if (booking is null) return NotFound();
         return booking;
     }
