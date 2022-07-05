@@ -41,7 +41,10 @@ public class BookingController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<Booking>> GetBooking(int id)
     {
-        var booking = await _context.Bookings.FindAsync(id);
+        var filteredRoles = _currentUserService?.UserRole;
+        var filteredId = _currentUserService?.UserId;
+
+        var booking = filteredRoles!.Equals("Administrator") ? await _context.Bookings.FindAsync(id) : await _context.Bookings.FirstOrDefaultAsync(c => c.Id == id && c.UserId == filteredId);
         if (booking is null) return NotFound();
         return booking;
     }
