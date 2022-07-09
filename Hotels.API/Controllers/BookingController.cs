@@ -72,13 +72,36 @@ public class BookingController : ControllerBase
         return NoContent();
     }
 
+    //[HttpPost]
+    //[Authorize]
+    //public async Task<ActionResult<Booking>> PostBooking(BookingRequest booking)
+    //{
+    //    var requestedRoom = await _roomsRepository.GetDetails(booking.RoomId);
+    //    if (requestedRoom.IsAvailable is false)
+    //        return Ok(new { failed = "The room you are looking for is already booked." });
+
+    //    requestedRoom.IsAvailable = false;
+    //    var updateRequestedRoom = _mapper.Map<Room>(requestedRoom);
+    //    await _roomsRepository.UpdateAsync(updateRequestedRoom);
+
+    //    var createBooking = _mapper.Map<Booking>(booking);
+    //    createBooking.UserId = _currentUserService?.UserId ?? string.Empty;
+    //    await _context.Bookings.AddAsync(createBooking);
+    //    await _context.SaveChangesAsync();
+
+    //    return CreatedAtAction("GetBooking", new { id = createBooking.Id }, booking);
+    //}
+
     [HttpPost]
     [Authorize]
     public async Task<ActionResult<Booking>> PostBooking(BookingRequest booking)
     {
-        var requestedRoom = await _roomsRepository.GetDetails(booking.RoomId);
-        if (requestedRoom.IsAvailable is false)
+        await CheckRoomAvailableStatus(booking.RoomId);
+        var requestedRoom = await _context.Rooms.FindAsync(booking.RoomId);
+        if (requestedRoom!.IsAvailable is false)
+        {
             return Ok(new { failed = "The room you are looking for is already booked." });
+        }
 
         requestedRoom.IsAvailable = false;
         var updateRequestedRoom = _mapper.Map<Room>(requestedRoom);
@@ -109,5 +132,18 @@ public class BookingController : ControllerBase
     private bool BookingExists(int id)
     {
         return (_context.Bookings?.Any(e => e.Id == id)).GetValueOrDefault();
+    }
+
+    private async Task CheckRoomAvailableStatus(int roomId)
+    {
+        var room = await _roomsRepository.GetDetails(roomId);
+        if (room.IsAvailable == false && room.CheckOut.Date < DateTime.Now.Date)
+        {
+            room.IsAvailable = true;
+            room.CheckOut = DateTime.Now.Date;
+            var model = _context.Entry(_mapper.Map<Room>(room));
+            model.State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
     }
 }
