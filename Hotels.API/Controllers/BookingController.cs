@@ -99,9 +99,7 @@ public class BookingController : ControllerBase
         await CheckRoomAvailableStatus(booking.RoomId);
         var requestedRoom = await _context.Rooms.FindAsync(booking.RoomId);
         if (requestedRoom!.IsAvailable is false)
-        {
             return Ok(new { failed = "The room you are looking for is already booked." });
-        }
 
         requestedRoom.IsAvailable = false;
         var updateRequestedRoom = _mapper.Map<Room>(requestedRoom);
