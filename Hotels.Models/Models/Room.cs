@@ -17,7 +17,6 @@ public class Room
     public int BedCount { get; set; }
     public int BathroomCount { get; set; }
     public bool IsBooked { get; set; }
-    public bool IsFavourite { get; set; }
     public double ServiceCharge { get; set; }
     public string DiscountedPrice { get; set; } = string.Empty;
 

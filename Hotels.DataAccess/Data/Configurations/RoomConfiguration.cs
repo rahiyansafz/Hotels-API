@@ -24,7 +24,6 @@ public class RoomConfiguration : IEntityTypeConfiguration<Room>
                 BedCount = 3,
                 BathroomCount = 2,
                 IsBooked = false,
-                IsFavourite = false,
                 ServiceCharge = 15,
                 DiscountedPrice = string.Empty,
                 HotelId = 1,
@@ -44,7 +43,6 @@ public class RoomConfiguration : IEntityTypeConfiguration<Room>
                 BedCount = 3,
                 BathroomCount = 2,
                 IsBooked = false,
-                IsFavourite = false,
                 ServiceCharge = 15,
                 DiscountedPrice = string.Empty,
                 HotelId = 2
@@ -64,7 +62,6 @@ public class RoomConfiguration : IEntityTypeConfiguration<Room>
                 BedCount = 3,
                 BathroomCount = 2,
                 IsBooked = false,
-                IsFavourite = false,
                 ServiceCharge = 15,
                 DiscountedPrice = string.Empty,
                 HotelId = 3

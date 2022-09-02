@@ -27,8 +27,6 @@ public class BaseRoomDto
     [Required]
     public bool IsBooked { get; set; }
     [Required]
-    public bool IsFavourite { get; set; }
-    [Required]
     public double ServiceCharge { get; set; }
     [Required]
     public string DiscountedPrice { get; set; } = string.Empty;
